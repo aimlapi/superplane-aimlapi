@@ -14,7 +14,8 @@ export type MCPCatalogCategory =
   | "observability"
   | "incident"
   | "infrastructure"
-  | "database";
+  | "database"
+  | "ai";
 
 export type MCPCatalogEntry = {
   id: string;
@@ -116,6 +117,7 @@ export const MCP_CATALOG_CATEGORY_ORDER: MCPCatalogCategory[] = [
   "incident",
   "infrastructure",
   "database",
+  "ai",
 ];
 
 export const MCP_CATALOG_CATEGORY_LABELS: Record<MCPCatalogCategory, string> = {
@@ -129,6 +131,7 @@ export const MCP_CATALOG_CATEGORY_LABELS: Record<MCPCatalogCategory, string> = {
   incident: "Incident",
   infrastructure: "Infrastructure",
   database: "Database",
+  ai: "AI & Data",
 };
 
 function catalogSearchText(entry: MCPCatalogEntry): string {
@@ -391,5 +394,16 @@ export const MCP_CATALOG: MCPCatalogEntry[] = [
     url: "https://mcp.prisma.io/mcp",
     auth: "AUTH_OAUTH",
     instruction: AGENT_RESOURCES_COPY.prismaInstruction,
+  },
+  {
+    id: "aimlapi",
+    name: "aimlapi",
+    label: "AI/ML API",
+    icon: "aimlapi",
+    category: "ai",
+    url: "https://mcp.aimlapi.com/mcp",
+    auth: "AUTH_HEADERS",
+    headerName: "Authorization",
+    instruction: AGENT_RESOURCES_COPY.aimlapiInstruction,
   },
 ];

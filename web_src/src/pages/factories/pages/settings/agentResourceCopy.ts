@@ -10,6 +10,7 @@ export type AgentResourceInstruction =
     };
 
 export const GITHUB_PERSONAL_ACCESS_TOKEN_URL = "https://github.com/settings/personal-access-tokens/new";
+export const AIMLAPI_API_KEYS_URL = "https://aimlapi.com/app/keys";
 export const CIRCLECI_PERSONAL_API_TOKEN_URL = "https://app.circleci.com/settings/user/tokens";
 export const SEMAPHORE_API_TOKEN_URL =
   "https://docs.semaphore.io/using-semaphore/ai/mcp-server#connect-with-an-api-token";
@@ -205,6 +206,13 @@ export const AGENT_RESOURCES_COPY = {
     href: GITHUB_PERSONAL_ACCESS_TOKEN_URL,
     label: "GitHub personal access token",
     after: " and paste it here.",
+  },
+  aimlapiInstruction: {
+    before: "Create an ",
+    href: AIMLAPI_API_KEYS_URL,
+    label: "AI/ML API key",
+    after:
+      " and paste it here. Generation, chat, embeddings, and tool runs are billed to your AI/ML API account. Model search and account checks are free.",
   },
   jiraInstruction: "Sign in with Atlassian to grant access to Jira.",
   linearInstruction: "Sign in with Linear.",

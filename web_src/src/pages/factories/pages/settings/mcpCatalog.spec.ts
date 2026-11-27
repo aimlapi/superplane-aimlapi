@@ -2,6 +2,7 @@ import { describe, expect, it } from "bun:test";
 
 import {
   AGENT_RESOURCES_COPY,
+  AIMLAPI_API_KEYS_URL,
   CIRCLECI_PERSONAL_API_TOKEN_URL,
   GITHUB_PERSONAL_ACCESS_TOKEN_URL,
   SEMAPHORE_API_TOKEN_URL,
@@ -42,6 +43,7 @@ describe("MCP_CATALOG", () => {
       "mongodb-atlas",
       "neon",
       "prisma",
+      "aimlapi",
     ]);
     for (const entry of MCP_CATALOG) {
       expect(entry.url.startsWith("https://")).toBe(true);
@@ -57,10 +59,33 @@ describe("MCP_CATALOG", () => {
     expect(semaphore?.auth).toBe("AUTH_HEADERS");
     expect(semaphore?.headerName).toBe("Authorization");
     expect(
-      MCP_CATALOG.filter((entry) => entry.id !== "github" && entry.id !== "circleci" && entry.id !== "semaphore").every(
-        (entry) => entry.auth === "AUTH_OAUTH",
-      ),
+      MCP_CATALOG.filter(
+        (entry) =>
+          entry.id !== "github" && entry.id !== "circleci" && entry.id !== "semaphore" && entry.id !== "aimlapi",
+      ).every((entry) => entry.auth === "AUTH_OAUTH"),
     ).toBe(true);
+  });
+
+  it("prefills AI/ML API header auth and an API key instruction", () => {
+    const aimlapi = MCP_CATALOG.find((entry) => entry.id === "aimlapi");
+    expect(catalogConnectionDefaults(aimlapi)).toEqual({
+      name: "aimlapi",
+      url: "https://mcp.aimlapi.com/mcp",
+      auth: "AUTH_HEADERS",
+      headers: [{ name: "Authorization" }],
+      instruction: AGENT_RESOURCES_COPY.aimlapiInstruction,
+    });
+    expect(AGENT_RESOURCES_COPY.aimlapiInstruction.href).toBe(AIMLAPI_API_KEYS_URL);
+    expect(AGENT_RESOURCES_COPY.aimlapiInstruction.after).toContain("billed");
+    expect(AGENT_RESOURCES_COPY.aimlapiInstruction.after).toContain("free");
+    expect(catalogEntryForResource({ url: "https://mcp.aimlapi.com/mcp", auth: "AUTH_HEADERS" })?.id).toBe("aimlapi");
+    expect(catalogEntryForResource({ url: "https://mcp.aimlapi.com/mcp", auth: "AUTH_OAUTH" })).toBeUndefined();
+    expect(filterMCPCatalog(MCP_CATALOG, "aiml").map((entry) => entry.id)).toEqual(["aimlapi"]);
+    expect(
+      groupMCPCatalog(MCP_CATALOG)
+        .find((group) => group.id === "ai")
+        ?.entries.map((e) => e.id),
+    ).toEqual(["aimlapi"]);
   });
 
   it("prefills GitHub header auth and a token instruction", () => {
@@ -262,6 +287,7 @@ describe("groupMCPCatalog", () => {
       "observability",
       "infrastructure",
       "database",
+      "ai",
     ]);
     expect(groups.find((group) => group.id === "code")?.entries.map((entry) => entry.label)).toEqual([
       "GitHub",

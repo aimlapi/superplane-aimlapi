@@ -3,6 +3,7 @@ import awsLambdaIcon from "@/assets/icons/integrations/aws.lambda.svg";
 import awsSqsIcon from "@/assets/icons/integrations/aws.sqs.svg";
 import bitbucketIcon from "@/assets/icons/integrations/bitbucket.svg";
 import awsEcsIcon from "@/assets/icons/integrations/aws.ecs.svg";
+import aimlapiIcon from "@/assets/icons/integrations/aimlapi.svg";
 import circleciIcon from "@/assets/icons/integrations/circleci.svg";
 import awsCloudwatchIcon from "@/assets/icons/integrations/aws.cloudwatch.svg";
 import awsCodePipelineIcon from "@/assets/icons/integrations/aws.codepipeline.svg";
@@ -81,6 +82,7 @@ import graphqlIcon from "@/assets/icons/graphql.svg";
 
 /** Integration type name (e.g. "github") → logo src. Used for Settings tab and header. */
 export const INTEGRATION_APP_LOGO_MAP: Record<string, string> = {
+  aimlapi: aimlapiIcon,
   aws: awsIcon,
   bitbucket: bitbucketIcon,
   circleci: circleciIcon,
